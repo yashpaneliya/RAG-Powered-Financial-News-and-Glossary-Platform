@@ -1,3 +1,5 @@
 .vscode/
 venv/
 .env
+fin_logs/
+*.pyc
