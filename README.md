@@ -6,34 +6,34 @@ The **Financial Intelligence Hub** is a comprehensive RAG-based (Retrieval-Augme
 ---
 
 ### **🌟 Features**
-- 🔎 **Hybrid RAG Retrieval**:  
-    - Combines **SQL filtering** with **Pinecone vector search** for **accurate glossary retrieval**.
-- 🔥 **Reranking**:  
-    - Improves result relevance by **reranking using SQL boosting** and **cosine similarity**.  
-- 🛠️ **Efficient Vector Search with Pinecone**:  
-    - Stores financial glossary embeddings in **Pinecone** for fast and scalable retrieval. 
-- ⚙️ **RESTful APIs with FastAPI**:  
-    - Exposes clean and modular **APIs for glossary retrieval and management**.  
+### 🔥 **1. Financial Glossary Augmentation Module (RAG)**
+
+- Stores and retrieves financial terms with definitions, simplified explanations, and contextual examples.
+- Uses a **hybrid RAG architecture** combining PostgreSQL (structured metadata) and Pinecone (vector search).
+- **Efficient retrieval** with SQL filtering + vector store similarity search.
+- **Reranking logic** to prioritize relevant results.
+
+### 📰 **2. Financial Market News Summarizer Module**
+
+- Aggregates financial news articles from multiple sources (Google News RSS).
+- Extracts and summarizes articles using **LLM-based summarization** (OpenAI GPT Models).
+- Stores articles in PostgreSQL with title, content, source, and summary.
+- Robust error handling with retries and content extraction.
 
 ---
 
-### **🛠️ Tech Stack**
-#### ✅ **Languages & Frameworks**
-- **Python** → Main programming language.
-- **FastAPI** → For building RESTful APIs.
-- **SQLAlchemy** → ORM for PostgreSQL integration.
+## 🛠️ **Tech Stack**
 
-#### ✅ **Database & Vector Search**
-- **PostgreSQL** → Metadata store for glossary terms.  
-- **Pinecone** → Vector database for **semantic search**.  
-
-#### ✅ **Embedding Models**
-- **OpenAI Embeddings** → For Pinecone vector insertion.
-
+- **Backend:** Python (FastAPI)
+- **Database:** PostgreSQL (structured data storage)
+- **Vector Store:** Pinecone (vector embedding retrieval)
+- **Embedding Model:** OpenAI Ada-002
+- **LLM:** OpenAI GPT (summarization)
+- **Web Scraping:** BeautifulSoup4
 ---
 
 ### **💡 How It Works**
-**Flow Diagram:**
+**Glossary Augmentation Module Flow Diagram:**
 ![Flow Diagram](Fin-RAG.png)
 
 ---
@@ -43,6 +43,9 @@ The **Financial Intelligence Hub** is a comprehensive RAG-based (Retrieval-Augme
 ```bash
 git clone https://github.com/your-username/financial-intelligence-hub.git
 cd financial-intelligence-hub
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate    # Windows
 ```
 
 2️⃣ **Set up environment variables:**
@@ -78,6 +81,20 @@ CREATE TABLE glossary (
 	updated_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	deleted_at timestamp NULL,
 	embedded bool NULL
+);
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE news_articles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    source TEXT NOT NULL,
+    url TEXT NOT NULL,
+    published_at TIMESTAMP NOT NULL,
+    summary TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP NULL
 );
 ```
 
