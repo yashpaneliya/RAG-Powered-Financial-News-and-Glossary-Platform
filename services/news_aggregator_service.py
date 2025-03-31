@@ -10,6 +10,7 @@ from requests_html import HTMLSession
 from core.database import get_db
 from models.news import NewsArticle
 from core.logger import logger
+from services.sentiment_analysis_service import analyze_sentiment
 from services.summarization_service import generate_summary
 
 RSS_FEEDS = [
@@ -150,13 +151,15 @@ def store_articles_db(articles: list, db: Session):
 
             content = extract_article_content(article['url'])
             summary = generate_summary(content)
+            sentiment = analyze_sentiment(summary)
 
             news_article = NewsArticle(
                 title=article['title'],
                 source=article['source'],
                 url=article['url'],
                 published_at=article['published_at'],
-                summary=summary
+                summary=summary,
+                sentiment=sentiment
             )
 
             db.add(news_article)

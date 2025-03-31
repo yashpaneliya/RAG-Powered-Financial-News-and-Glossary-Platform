@@ -15,6 +15,7 @@ class NewsArticle(Base):
     url = Column(Text, nullable=False)
     published_at = Column(TIMESTAMP, nullable=False)
     summary = Column(Text)
+    sentiment = Column(Text)
     created_at = Column(TIMESTAMP, default=datetime.utcnow, nullable=False)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     deleted_at = Column(TIMESTAMP, nullable=True)

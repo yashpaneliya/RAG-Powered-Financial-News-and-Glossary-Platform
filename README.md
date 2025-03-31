@@ -1,7 +1,7 @@
-# Hybrid RAG app for Financial Intelligence
+# Financial Intelligence Hub
 
 ### 🔥 **Overview**
-The **Financial Intelligence Hub** is a comprehensive RAG-based (Retrieval-Augmented Generation) application designed to **enhance financial knowledge accessibility**.  
+The Financial Intelligence Hub is a comprehensive **RAG** & **LLM** based application designed to **enhance financial knowledge accessibility**.  
 
 ---
 
@@ -13,11 +13,13 @@ The **Financial Intelligence Hub** is a comprehensive RAG-based (Retrieval-Augme
 - **Efficient retrieval** with SQL filtering + vector store similarity search.
 - **Reranking logic** to prioritize relevant results.
 
-### 📰 **2. Financial Market News Summarizer Module**
+### 📰 **2. Financial Market News Summarizer & Sentiment Analyzer Module**
 
 - Aggregates financial news articles from multiple sources (Google News RSS).
-- Extracts and summarizes articles using **LLM-based summarization** (OpenAI GPT Models).
+- Extracts and summarizes articles using **LLM-based summarization**.
 - Stores articles in PostgreSQL with title, content, source, and summary.
+- Analyzes the **sentiment** of financial news summaries.
+- Labels each article as **positive, negative, or neutral**.
 - Robust error handling with retries and content extraction.
 
 ---
@@ -30,6 +32,7 @@ The **Financial Intelligence Hub** is a comprehensive RAG-based (Retrieval-Augme
 - **Embedding Model:** OpenAI Ada-002
 - **LLM:** OpenAI GPT (summarization)
 - **Web Scraping:** BeautifulSoup4
+- **Sentiment Model:** [VADER](https://github.com/cjhutto/vaderSentiment)
 ---
 
 ### **💡 How It Works**
@@ -92,6 +95,7 @@ CREATE TABLE news_articles (
     url TEXT NOT NULL,
     published_at TIMESTAMP NOT NULL,
     summary TEXT,
+	sentiment varchar(10) DEFAULT 'neutral'::character varying NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     deleted_at TIMESTAMP NULL
